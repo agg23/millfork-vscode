@@ -1,0 +1,4 @@
+**/node_modules
+client/out
+
+**/.DS_Store
