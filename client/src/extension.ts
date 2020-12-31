@@ -3,42 +3,39 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as path from "path";
-import { workspace, ExtensionContext } from "vscode";
+import { workspace, ExtensionContext, commands, window } from "vscode";
 
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
-  TransportKind,
 } from "vscode-languageclient";
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
+  const jarPath: string = workspace.getConfiguration("millfork").get("jarPath");
+
+  if (jarPath.trim().length < 1) {
+    window.showErrorMessage(
+      "No jarPath configuration provided. Cannot start server"
+    );
+
+    return;
+  }
+
+  const path = workspace.asRelativePath(jarPath);
+
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   let serverOptions: ServerOptions = {
     run: {
       command: "java",
-      // TODO: Replace hardcoded paths
-      args: [
-        "-jar",
-        "/Users/adam/code/millfork/target/scala-2.12/millfork.jar",
-      ],
+      args: ["-jar", path, "-lsp"],
     },
     debug: {
       command: "java",
-      args: [
-        // '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000',
-        "-jar",
-        "/Users/adam/code/millfork/target/scala-2.12/millfork.jar",
-        "./main.mfk",
-        "-o",
-        "build/scroll.nes",
-        "-t",
-        "nes_small",
-      ],
+      args: ["-jar", path, "-lsp"],
     },
   };
 
@@ -54,10 +51,22 @@ export function activate(context: ExtensionContext) {
 
   // Create the language client and start the client.
   client = new LanguageClient(
-    "languageServerExample",
-    "Language Server Example",
+    "MillforkLanguageServer",
+    "Millfork Language Server",
     serverOptions,
     clientOptions
+  );
+
+  context.subscriptions.push(
+    commands.registerCommand("millfork.restart", async () => {
+      await window.showInformationMessage("Restarting Millfork");
+
+      await client.stop();
+
+      await client.start();
+
+      await window.showInformationMessage("Millfork started");
+    })
   );
 
   // Start the client. This will also launch the server
