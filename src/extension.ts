@@ -1,15 +1,6 @@
-/* --------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for license information.
- * ------------------------------------------------------------------------------------------ */
-
 import { workspace, ExtensionContext, commands, window } from "vscode";
-
-import {
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-} from "vscode-languageclient";
+import { LanguageClientOptions } from "vscode-languageclient";
+import { LanguageClient, ServerOptions } from "vscode-languageclient/node";
 
 let client: LanguageClient;
 
