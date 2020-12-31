@@ -1,38 +1,9 @@
-# LSP Example
+# Millfork VSCode Extension
 
-Heavily documented sample code for https://code.visualstudio.com/api/language-extensions/language-server-extension-guide
+Adds support for the [Millfork](https://github.com/KarolS/millfork) language server for VSCode. Extension is still in progress, but should be sufficent for regular use. At the moment, I recommend also using https://github.com/Ambez05/mcx16vscodeext for syntax highlighting.
 
-## Functionality
+## Configuration
 
-This Language Server works for plain text file. It has the following language features:
-- Completions
-- Diagnostics regenerated on each file change or configuration change
-
-It also includes an End-to-End test.
-
-## Structure
-
-```
-.
-├── client // Language Client
-│   ├── src
-│   │   ├── test // End to End tests for Language Client / Server
-│   │   └── extension.ts // Language Client entry point
-├── package.json // The extension manifest.
-└── server // Language Server
-    └── src
-        └── server.ts // Language Server entry point
-```
-
-## Running the Sample
-
-- Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder
-- Open VS Code on this folder.
-- Press Ctrl+Shift+B to compile the client and server.
-- Switch to the Debug viewlet.
-- Select `Launch Client` from the drop down.
-- Run the launch config.
-- If you want to debug the server as well use the launch configuration `Attach to Server`
-- In the [Extension Development Host] instance of VSCode, open a document in 'plain text' language mode.
-  - Type `j` or `t` to see `Javascript` and `TypeScript` completion.
-  - Enter text content such as `AAA aaa BBB`. The extension will emit diagnostics for all words in all-uppercase.
+| Option | Value |
+| ------ | ----- |
+| `millfork.jarPath` | The path of the Millfork jar file. If relative, path is based on the current workspace |
