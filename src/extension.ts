@@ -8,9 +8,16 @@ export function activate(context: ExtensionContext) {
   const jarPath: string = workspace.getConfiguration("millfork").get("jarPath");
 
   if (jarPath.trim().length < 1) {
-    window.showErrorMessage(
-      "No jarPath configuration provided. Cannot start server"
-    );
+    window
+      .showErrorMessage(
+        "No jarPath configuration provided. Cannot start server",
+        "Open extension settings"
+      )
+      .then((selected: string | undefined) => {
+        if (selected) {
+          commands.executeCommand("workbench.action.openSettings", "millfork");
+        }
+      });
 
     return;
   }
